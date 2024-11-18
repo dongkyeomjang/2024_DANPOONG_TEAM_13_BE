@@ -3,8 +3,11 @@ package com.daon.onjung.security.handler.login;
 import com.daon.onjung.core.utility.HttpServletUtil;
 import com.daon.onjung.core.utility.JsonWebTokenUtil;
 import com.daon.onjung.security.application.dto.response.DefaultJsonWebTokenDto;
-import com.daon.onjung.security.application.usecase.LoginOwnerByDefaultUseCase;
-import com.daon.onjung.security.info.CustomUserPrincipal;
+import com.daon.onjung.security.application.usecase.LoginUserByOauthUseCase;
+import com.daon.onjung.security.application.usecase.ReadOrCreateUserUseCase;
+import com.daon.onjung.security.domain.mysql.Account;
+import com.daon.onjung.security.domain.type.ESecurityRole;
+import com.daon.onjung.security.info.KakaoOauth2UserInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +19,10 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class DefaultLoginSuccessHandler implements AuthenticationSuccessHandler {
+public class OauthLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final LoginOwnerByDefaultUseCase loginOwnerByDefaultUseCase;
+    private final ReadOrCreateUserUseCase readOrCreateUserUseCase;
+    private final LoginUserByOauthUseCase loginUserByOauthUseCase;
 
     private final JsonWebTokenUtil jwtUtil;
     private final HttpServletUtil httpServletUtil;
@@ -29,14 +33,17 @@ public class DefaultLoginSuccessHandler implements AuthenticationSuccessHandler 
             HttpServletResponse response,
             Authentication authentication
     ) throws IOException {
-        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+
+        KakaoOauth2UserInfo principal = (KakaoOauth2UserInfo) authentication.getPrincipal();
+
+        Account loginUser = readOrCreateUserUseCase.execute(principal);
 
         DefaultJsonWebTokenDto jsonWebTokenDto = jwtUtil.generateDefaultJsonWebTokens(
-                principal.getId(),
-                principal.getRole()
+                loginUser.getId(),
+                ESecurityRole.USER
         );
 
-        loginOwnerByDefaultUseCase.execute(principal, jsonWebTokenDto);
+        loginUserByOauthUseCase.execute(loginUser.getId(), jsonWebTokenDto);
 
         httpServletUtil.onSuccessBodyResponseWithJWTBody(response, jsonWebTokenDto);
     }

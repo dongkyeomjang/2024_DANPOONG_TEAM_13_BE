@@ -1,7 +1,7 @@
 package com.daon.onjung.security.application.service;
 
 import com.daon.onjung.security.application.dto.response.DefaultJsonWebTokenDto;
-import com.daon.onjung.security.application.usecase.LoginByDefaultUseCase;
+import com.daon.onjung.security.application.usecase.LoginOwnerByDefaultUseCase;
 import com.daon.onjung.security.domain.service.RefreshTokenService;
 import com.daon.onjung.security.info.CustomUserPrincipal;
 import com.daon.onjung.security.repository.redis.RefreshTokenRepository;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class LoginDefaultService implements LoginByDefaultUseCase {
+public class LoginOwnerByDefaultService implements LoginOwnerByDefaultUseCase {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final RefreshTokenService refreshTokenService;
