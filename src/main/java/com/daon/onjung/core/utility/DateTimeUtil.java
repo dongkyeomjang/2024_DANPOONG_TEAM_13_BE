@@ -19,6 +19,7 @@ public class DateTimeUtil {
     public static final DateTimeFormatter ISOTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     public static final DateTimeFormatter KORDateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"); // 새로운 포맷터 추가
     public static final DateTimeFormatter KORYearMonthDateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월"); // 새로운 포맷터 추가
+    public static final DateTimeFormatter DotSeparatedDateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     public static final DateTimeFormatter CustomDateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd (EEE)", Locale.KOREAN);
     public static final DateTimeFormatter CustomDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH시 mm분", Locale.KOREAN);
 
@@ -189,6 +190,28 @@ public class DateTimeUtil {
      */
     public static String convertLocalDateTimeToCustomDateTime(LocalDateTime dateTime) {
         return dateTime.format(CustomDateTimeFormatter);
+    }
+
+
+    /**
+     * 나의 식권 조회 시간 포맷팅: "yyyy.MM.dd"
+     *
+     * @param date LocalDateTime
+     * @return String
+     */
+    public static String convertLocalDateTimeToDotSeparatedDateTime(LocalDate date) {
+        return date.format(DotSeparatedDateFormatter);
+    }
+
+
+    /**
+     * String을 LocalDate 형식으로 변환 (yyyy. MM. dd)
+     *
+     * @param date LocalDate
+     * @return String
+     */
+    public static LocalDate convertDotSeparatedToLocalDate(String date) {
+        return LocalDate.parse(date, DotSeparatedDateFormatter);
     }
 
 
