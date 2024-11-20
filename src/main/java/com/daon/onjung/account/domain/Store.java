@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -103,5 +104,12 @@ public class Store {
        this.ocrStoreAddress = ocrStoreAddress;
        this.createdAt = LocalDateTime.now();
        this.owner = owner;
+    }
+
+    // get tags
+    public List<String> getTags() {
+        return onjungTags.stream()
+                .map(Enum::name)
+                .collect(Collectors.toList());
     }
 }
