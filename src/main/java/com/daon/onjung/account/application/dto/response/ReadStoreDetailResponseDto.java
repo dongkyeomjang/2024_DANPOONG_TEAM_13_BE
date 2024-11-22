@@ -215,21 +215,25 @@ public class ReadStoreDetailResponseDto extends SelfValidating<ReadStoreOverview
 
         @NotNull(message = "info는 null일 수 없습니다.")
         @JsonProperty("info")
-        private final StoreHistoryInfo storeHistoryInfo;
+        private final List<StoreHistoryInfo> storeHistoryInfo;
 
         @Builder
-        public StoreHistoryDto(String date, StoreHistoryInfo storeHistoryInfo) {
+        public StoreHistoryDto(String date, List<StoreHistoryInfo> storeHistoryInfo) {
             this.date = date;
             this.storeHistoryInfo = storeHistoryInfo;
         }
 
         public static StoreHistoryDto fromEntity(StoreHistory storeHistory) {
             return StoreHistoryDto.builder()
-                    .date(DateTimeUtil.convertLocalDateToKORYearMonthString(storeHistory.getActionDate()))
-                    .storeHistoryInfo(StoreHistoryInfo.fromEntity(
-                            storeHistory.getContent(),
-                            storeHistory.getAmount() + "만원"
-                    ))
+                    .date(DateTimeUtil.convertLocalDateToString(storeHistory.getActionDate()))
+                    .storeHistoryInfo(
+                            List.of(
+                                    StoreHistoryInfo.fromEntity(
+                                            storeHistory.getContent(),
+                                            storeHistory.getAmount() / 10000 + "만원"
+                                    )
+                            )
+                    )
                     .build();
         }
 
