@@ -28,4 +28,11 @@ public class TicketService {
                 .event(event)
                 .build();
     }
+
+    public void updateIsValidate(Ticket ticket) {
+        // 티켓의 isValidate가 true일 경우 false로 변경
+        if (ticket.getIsValidate()) {
+            ticket.updateIsValidate(false);
+        }
+    }
 }
