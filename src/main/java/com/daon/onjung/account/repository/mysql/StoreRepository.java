@@ -2,8 +2,6 @@ package com.daon.onjung.account.repository.mysql;
 
 import com.daon.onjung.account.domain.Store;
 import com.daon.onjung.account.domain.type.EOnjungTag;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -66,4 +64,5 @@ public interface StoreRepository extends JpaRepository <Store, Long> {
     // store id와 일치하는 share의 count에 100을 곱한 금액
     @Query("SELECT SUM(s.count * 100) FROM Share s WHERE s.store.id = :storeId")
     Integer sumShareAmountByStoreId(@Param("storeId") Long storeId);
+
 }
