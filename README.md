@@ -71,7 +71,7 @@
 <br/>
 
 ## 외부 API
-Naver Cloud Platform - ORM
+Naver Cloud Platform - OCR
 
 ## 나눔은 행복으로, 행복은 다시 나눔으로
 후원이 단순한 금전적 지원을 넘어 착한 소비를 실천하고,
