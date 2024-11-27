@@ -4,6 +4,8 @@ import com.daon.onjung.core.annotation.security.AccountID;
 import com.daon.onjung.core.dto.ResponseDto;
 import com.daon.onjung.suggestion.application.dto.request.CreateBoardRequestDto;
 import com.daon.onjung.suggestion.application.dto.request.CreateCommentRequestDto;
+import com.daon.onjung.suggestion.application.dto.response.CreateCommentResponseDto;
+import com.daon.onjung.suggestion.application.dto.response.CreateOrDeleteLikeResponseDto;
 import com.daon.onjung.suggestion.application.usecase.CreateBoardUseCase;
 import com.daon.onjung.suggestion.application.usecase.CreateCommentUseCase;
 import com.daon.onjung.suggestion.application.usecase.CreateOrDeleteLikeUseCase;
@@ -34,21 +36,19 @@ public class SuggestionCommandV1Controller {
     }
 
     @PostMapping("/api/v1/boards/{id}/comments")
-    public ResponseDto<Void> createComment(
+    public ResponseDto<CreateCommentResponseDto> createComment(
             @AccountID UUID accountId,
             @PathVariable Long id,
             @RequestBody @Valid CreateCommentRequestDto requestDto
     ) {
-        createCommentUseCase.execute(accountId, id, requestDto);
-        return ResponseDto.created(null);
+        return ResponseDto.created(createCommentUseCase.execute(accountId, id, requestDto));
     }
 
     @PutMapping("/api/v1/boards/{id}/likes")
-    public ResponseDto<Void> likeBoard(
+    public ResponseDto<CreateOrDeleteLikeResponseDto> likeBoard(
             @AccountID UUID accountId,
             @PathVariable Long id
     ) {
-        createOrDeleteLikeUseCase.execute(accountId, id);
-        return ResponseDto.ok(null);
+        return ResponseDto.ok(createOrDeleteLikeUseCase.execute(accountId, id));
     }
 }
